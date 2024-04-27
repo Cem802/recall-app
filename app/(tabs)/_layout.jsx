@@ -39,6 +39,21 @@ const TabsLayout = () => {
         }}
       >
         <Tabs.Screen
+          name='reminders'
+          options={{
+            title: 'Reminders',
+            headerShown: false,
+            tabBarIcon: ({ color, focused}) => (
+              <TabIcon
+                icon='bells'
+                color={color}
+                name='Reminders'
+                focused={focused}
+              />
+            )
+          }}
+        />
+        <Tabs.Screen
           name='home'
           options={{
             title: 'Home',
