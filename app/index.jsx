@@ -12,8 +12,10 @@ export default function App() {
           <Text className="text-white text-5xl font-bold text-center">
             Welcome to Recall!
           </Text>
-
-          <CustomButton title="Enter" containerStyles="mt-7 w-full" handlePress={() => router.push('/chat')}/>
+          <Text className=" text-gray-400 text-lg text-center mt-2">
+            A place to store your thoughts, where you will never forget them again.
+          </Text>
+          <CustomButton title="Enter" containerStyles="mt-7 w-full" handlePress={() => router.push('/home')}/>
         </View>
       </ScrollView>
     </SafeAreaView>
