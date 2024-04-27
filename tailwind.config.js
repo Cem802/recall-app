@@ -7,13 +7,13 @@ module.exports = {
         primary: "#07060E",
         secondary: {
           DEFAULT: "#7468F3",
-          100: "#7468F3",
-          200: "#7468F3",
+          100: "#6255F1",
+          200: "#3F2FEE",
         },
         black: {
           DEFAULT: "#000",
           100: "#1E1E2D",
-          200: "#232533",
+          200: "#0E0C1D",
         },
         gray: {
           100: "#CDCDE0",
