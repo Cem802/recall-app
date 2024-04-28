@@ -4,12 +4,42 @@ import Anticon from '@expo/vector-icons/AntDesign'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { useGlobalContext } from '../context/GlobalProvider'
 
+const InfoCard = () => {
+    return (
+        <View className="p-5">
+            <View className="bg-[#6152B7] rounded-xl">
+                <View className="flex-row justify-between items-center p-5">
+                    <Text className="text-white font-pregular text-base">Date</Text>
+                    <Text className="text-white font-pregular text-base">12-02-2024</Text>
+                </View>
+                <View className="w-full h-[1px] bg-secondary" />
+                <View className="flex-row justify-between items-center p-5">
+                    <Text className="text-white font-pregular text-base">Topic</Text>
+                    <Text className="text-white font-pregular text-base">Cars</Text>
+                </View>
+                <View className="w-full h-[1px] bg-secondary-100" />
+                <View className="flex-row justify-between items-center p-5">
+                    <Text className="text-white font-pregular text-base">Total Messages</Text>
+                    <Text className="text-white font-pregular text-base">142</Text>
+                </View>
+            </View>
+
+            <View className="bg-[#6152B7] rounded-xl mt-5">
+                <View className="flex-row justify-between items-center p-5">
+                    <Text className="text-red-600 font-psemibold text-base">Delete</Text>
+                    <Text className="text-white font-pregular text-base"><Anticon name="delete" size={25} color="red" /></Text>
+                </View>
+            </View>
+        </View>
+    )
+}
+
 const ChatCard = ({date, message}) => {
     const { setBottomSheet } = useGlobalContext()
     const renderRightActions = () => {
         return (
             <View className="h-full w-48 flex-row justify-center items-center">
-                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => setBottomSheet(<Text>Gello</Text>)}>
+                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => setBottomSheet({header: "Chat Info", content: <InfoCard />})}>
                     <Anticon
                         name='infocirlceo'
                         size={25}
@@ -29,9 +59,24 @@ const ChatCard = ({date, message}) => {
         );
     };
 
+    const renderLeftActions = () => {
+        return (
+            <View className="h-full w-24 flex-row justify-center items-center">
+                <TouchableOpacity className="h-full justify-center items-center gap-1">
+                    <Anticon
+                        name='pushpino'
+                        size={25}
+                        color='#7468F3'
+                    />
+                    <Text className="text-white font-pthin text-xs">Pin</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
       
   return (
-    <Swipeable renderRightActions={renderRightActions} >
+    <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}>
     <View className="w-full">
         <View className="flex-row justify-start items-center px-4 gap-4 bg-primary">
             <Anticon

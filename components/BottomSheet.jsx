@@ -52,7 +52,7 @@ const BottomSheet = () =>{
             <GestureDetector gesture={panGesture}>
                 <Animated.View style={animatedStyle} className="absolute -bottom-[600px] left-0 h-[1000px] w-full bg-[#50429E] rounded-3xl">
                     <View className="flex-row w-full justify-between items-center p-5">
-                        <Text className="text-xl font-psemibold text-white">Header</Text>
+                        <Text className="text-xl font-psemibold text-white">{bottomSheet && bottomSheet.header}</Text>
                         <Anticon
                             name='closecircleo'
                             size={25}
@@ -62,7 +62,7 @@ const BottomSheet = () =>{
                             })}
                         />
                     </View>
-                    {bottomSheet && bottomSheet}
+                    {bottomSheet && bottomSheet.content}
                 </Animated.View>
             </GestureDetector>
         </>
