@@ -1,12 +1,38 @@
 import { View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Input from '../components/Input'
 import KeyboardUsingContainer from '../components/KeyboardUsingContainer'
 import Header from '../components/Header'
 import { LinearGradient } from 'expo-linear-gradient'
+import ChatView from '../components/ChatView'
 
 const chat = () => {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      user_id: 1,
+      sender: 'user',
+      content: 'Hello, how are you doing?',
+      created_at: '2021-09-20T12:00:00Z',
+      chat_id: 1
+    },
+    {
+      id: 2,
+      user_id: 1,
+      sender: 'user',
+      content: 'Hello, how are you doing? I am doing fine, thank you for asking. How about you?',
+      created_at: '2021-09-20T12:00:00Z',
+      chat_id: 1
+    },
+    {
+      id: 3,
+      sender: 'ai',
+      content: 'Hello, how are you doing?',
+      created_at: '2021-09-20T12:00:00Z',
+      chat_id: 1
+    },
+  ])
   return (
     <SafeAreaView className="bg-primary h-full">
       <LinearGradient
@@ -16,7 +42,7 @@ const chat = () => {
         <KeyboardUsingContainer>
             <View className="h-full justify-between">
                 <Header title="Chat" />
-                <View></View>
+                <ChatView messages={messages} />
                 <Input placeholder="Write down your thoughts..." />
             </View>
         </KeyboardUsingContainer>
