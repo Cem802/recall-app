@@ -20,7 +20,7 @@ export default function App() {
           <Text className=" text-gray-400 text-sm font-pregular text-center mt-2">
             A place to store your thoughts, where you will never forget them again.
           </Text>
-          <CustomButton title="Enter" containerStyles="mt-7 w-full" handlePress={() => router.push('/home')}/>
+          <CustomButton title="Continue" containerStyles="mt-7 w-full" handlePress={() => router.push('/sign-in')}/>
         </View>
       </ScrollView>
     </SafeAreaView>
