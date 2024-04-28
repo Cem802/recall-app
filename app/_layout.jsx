@@ -2,6 +2,8 @@ import { SplashScreen, Stack } from 'expo-router'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
+import GlobalProvider from '../context/GlobalProvider';
+import BottomSheet from '../components/BottomSheet';
 
 
 SplashScreen.preventAutoHideAsync()
@@ -27,11 +29,14 @@ const RootLayout = () => {
     if (!fontsLoaded && !error) return null
 
     return (
-        <Stack>
-                <Stack.Screen name="index" options={{headerShown: false}}/>
-                <Stack.Screen name="chat" options={{headerShown: false}}/>
-                <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-        </Stack>
+        <GlobalProvider>
+            <Stack>
+                    <Stack.Screen name="index" options={{headerShown: false}}/>
+                    <Stack.Screen name="chat" options={{headerShown: false}}/>
+                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+            </Stack>
+            <BottomSheet />
+        </GlobalProvider>
     )
 }
 

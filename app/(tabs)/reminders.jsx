@@ -3,7 +3,7 @@ import React from 'react'
 
 const reminders = () => {
   return (
-    <View>
+    <View className="bg-primary h-full">
       <Text>reminders</Text>
     </View>
   )

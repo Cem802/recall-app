@@ -2,12 +2,14 @@ import { View, Text, TouchableOpacity, } from 'react-native'
 import React from 'react'
 import Anticon from '@expo/vector-icons/AntDesign'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { useGlobalContext } from '../context/GlobalProvider'
 
 const ChatCard = ({date, message}) => {
+    const { setBottomSheet } = useGlobalContext()
     const renderRightActions = () => {
         return (
             <View className="h-full w-48 flex-row justify-center items-center">
-                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24">
+                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => setBottomSheet(<Text>Gello</Text>)}>
                     <Anticon
                         name='infocirlceo'
                         size={25}
