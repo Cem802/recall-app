@@ -4,7 +4,7 @@ import React from 'react'
 import CustomButton from './CustomButton'
 import Anticon from '@expo/vector-icons/AntDesign'
 
-const EmptyState = ({ title, subtitle, buttonText, handlePress}) => {
+const EmptyState = ({ title, subtitle, buttonText, handlePress, isLoading}) => {
   return (
     <View className="h-full justify-center items-center px-4">
         <View className="m-5">
@@ -22,6 +22,7 @@ const EmptyState = ({ title, subtitle, buttonText, handlePress}) => {
             title={buttonText}
             handlePress={handlePress}
             containerStyles="w-full m-8"
+            isLoading={isLoading}
         />
     </View>
   )

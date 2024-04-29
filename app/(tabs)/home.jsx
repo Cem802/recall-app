@@ -1,26 +1,95 @@
 import { View, Text, SafeAreaView, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MCIicon from '@expo/vector-icons/MaterialCommunityIcons'
 import ChatCard from '../../components/ChatCard'
 import { LinearGradient } from 'expo-linear-gradient'
 import EmptyState from '../../components/EmptyState'
 import { Link, router } from 'expo-router'
 import Anticon from '@expo/vector-icons/AntDesign'
-
-const mockChats = [
-    {
-        id: 1,
-        Date: '27-08-2021',
-        lastMessage: 'Hello, how are you?',
-    },
-    {
-        id: 2,
-        Date: '25-08-2021',
-        lastMessage: 'Alright, see you later',
-    }
-]
+import { useGlobalContext } from '../../context/GlobalProvider'
+import { supabase } from '../../lib/supabase'
 
 const home = () => {
+  const { user } = useGlobalContext()
+  const [username, setUsername] = useState('')
+  const [usernameLoading, setUsernameLoading] = useState(true)
+  const [chats, setChats] = useState([])
+  const [chatsLoading, setChatsLoading] = useState(true)
+  const [creatingChat, setCreatingChat] = useState(false)
+
+  async function getUsername() {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+      if (error) {
+        throw error
+      }
+      if (data) {
+        setUsername(data.username)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message)
+      }
+    } finally {
+      setUsernameLoading(false)
+    }
+  }
+
+  async function getChatData() {
+    try {
+      const { data, error } = await supabase
+        .from('chats')
+        .select('*')
+        .eq('user_id', user.id)
+      if (error) {
+        throw error
+      }
+      if (data) {
+        setChats(data)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message)
+      }
+    } finally {
+      setChatsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getUsername()
+    getChatData()
+  }, [])
+
+  async function newChat() {
+    try {
+      setCreatingChat(true)
+      const { data, error } = await supabase
+        .from('chats')
+        .insert([
+          { user_id: user.id},
+        ])
+        .select()
+      if (error) {
+        throw error
+      }
+      if (data) {
+        chats.push(data[0])
+        router.push(`/chat/${data[0].id}`)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message)
+      }
+    } finally {
+      setCreatingChat(false)
+    }
+  }
+
   return (
     <SafeAreaView className="bg-primary h-full">
         <LinearGradient
@@ -28,10 +97,10 @@ const home = () => {
             className="absolute h-[100vh] left-0 right-0 top-0"
         />
         <FlatList
-        data={mockChats}
+        data={chats.sort((a, b) => b.pinned - a.pinned)}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ChatCard date={item.Date} message={item.lastMessage} />
+          <ChatCard date={item.created_at} message={item.topic} pinned={item.pinned} id={item.id} refresh={() => getChatData()}/>
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
@@ -41,7 +110,7 @@ const home = () => {
                   Welcome Back,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Cem
+                  {username}
                 </Text>
               </View>
 
@@ -60,7 +129,7 @@ const home = () => {
                 <Text className="text-gray-100 text-4xl font-pbold">
                     Chats
                 </Text>
-                <Anticon name='pluscircleo' size={25} color='white' onPress={() => router.push('/chat')}/>
+                <Anticon name='pluscircleo' size={25} color='white' onPress={() => newChat()}/>
             </View>
           </View>
         )}
@@ -69,7 +138,8 @@ const home = () => {
             title='No Chats Yet'
             subtitle='Start a new conversation by tapping the button below'
             buttonText='Start a Chat'
-            handlePress={() => router.push('/chat')}
+            handlePress={() => newChat()}
+            isLoading={creatingChat}
           />
         )}
       />

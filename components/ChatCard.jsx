@@ -3,6 +3,7 @@ import React from 'react'
 import Anticon from '@expo/vector-icons/AntDesign'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { useGlobalContext } from '../context/GlobalProvider'
+import { supabase } from '../lib/supabase'
 
 const InfoCard = () => {
     return (
@@ -34,7 +35,7 @@ const InfoCard = () => {
     )
 }
 
-const ChatCard = ({date, message}) => {
+const ChatCard = ({date, message, pinned, id, refresh}) => {
     const { setBottomSheet } = useGlobalContext()
     const renderRightActions = () => {
         return (
@@ -64,9 +65,10 @@ const ChatCard = ({date, message}) => {
             <View className="h-full w-24 flex-row justify-center items-center">
                 <TouchableOpacity className="h-full justify-center items-center gap-1">
                     <Anticon
-                        name='pushpino'
+                        name={`${pinned ? 'pushpin' : 'pushpino'}`}
                         size={25}
                         color='#7468F3'
+                        onPress={() => pinning()}
                     />
                     <Text className="text-white font-pthin text-xs">Pin</Text>
                 </TouchableOpacity>
@@ -74,6 +76,25 @@ const ChatCard = ({date, message}) => {
         );
     }
 
+    async function pinning() {
+        try {
+          const { data, error } = await supabase
+            .from('chats')
+            .update({ pinned: !pinned })
+            .eq('id', id)
+            .select()
+          if (error) {
+            throw error
+          }
+          if (data && refresh) {
+            refresh()
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            Alert.alert(error.message)
+          }
+        }
+      }
       
   return (
     <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}>
@@ -85,7 +106,13 @@ const ChatCard = ({date, message}) => {
                 color='white'
             />
             <View className="flex-1 p-4 border-y-[1px] border-black-200">
-                <Text className="text-white text-lg font-psemibold">{date}</Text>
+                <Text className="text-white text-lg font-psemibold">{
+                    new Date(date).toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                    })
+                }</Text>
                 <Text className="text-secondary-100 font-pextralight">{message}</Text>
             </View>
             <Anticon

@@ -11,7 +11,6 @@ const GlobalProvider = ({ children }) => {
     const [bottomSheet, setBottomSheet] = useState()
 
     useEffect(() => {
-        console.log(user)
         try {
             supabase.auth.getSession().then(({ data: { session } }) => {
                 if (session) {
