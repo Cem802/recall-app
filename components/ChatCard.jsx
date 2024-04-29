@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Pressable, Alert, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Anticon from '@expo/vector-icons/AntDesign'
+import FontawesomeIcon from '@expo/vector-icons/FontAwesome'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { useGlobalContext } from '../context/GlobalProvider'
 import { supabase } from '../lib/supabase'
@@ -26,12 +27,12 @@ const InfoCard = ({date, topic, total_msg}) => {
                 </View>
             </View>
 
-            <View className="bg-[#6152B7] rounded-xl mt-5">
+            <TouchableOpacity className="bg-[#6152B7] rounded-xl mt-5">
                 <View className="flex-row justify-between items-center p-5">
-                    <Text className="text-red-600 font-psemibold text-base">Delete</Text>
-                    <Text className="text-white font-pregular text-base"><Anticon name="delete" size={25} color="red" /></Text>
+                    <Text className="text-white font-psemibold text-base">Generate Summary</Text>
+                    <Text className="text-white font-pregular text-base"><FontawesomeIcon name="magic" size={25} color="white" /></Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
