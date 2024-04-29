@@ -7,37 +7,34 @@ import { LinearGradient } from 'expo-linear-gradient'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 
-import { useGlobalContext } from '../../context/GlobalProvider'
+import { supabase } from '../../lib/supabase'
 
 const SignUp = () => {
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+    const [form, setForm] = useState({
+        username: '',
+        email: '',
+        password: ''
+    })
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-//   const { setUser, setIsLoggedIn } = useGlobalContext()
+    async function signUpWithEmail() {
+        if(!form.username || !form.email || !form.password) {
+            Alert.alert('Error', 'Please fill in all fields')
+        }
+        setIsSubmitting(true)
+        const {
+            data: { session },
+            error,
+        } = await supabase.auth.signUp({
+            displayName: form.username,
+            email: form.email,
+            password: form.password,
+        })
+        if (error) Alert.alert(error.message)
+        if (!session) Alert.alert('Please check your inbox for email verification!')
+        setIsSubmitting(false)
+    }
 
-//   const submit = async () => {
-//     if(!form.username || !form.email || !form.password) {
-//       Alert.alert('Error', 'Please fill in all fields')
-//     }
-
-//     setIsSubmitting(true)
-
-//     try {
-
-//       setUser(result)
-//       setIsLoggedIn(true)
-
-//       router.replace('/home')
-//     } catch (error) {
-//       Alert.alert('Error', error.message)
-//     } finally {
-//       setIsSubmitting(false)
-//     }
-//   }
   return (
     <SafeAreaView className="bg-primary h-full">
         <LinearGradient
@@ -73,7 +70,7 @@ const SignUp = () => {
 
           <CustomButton
             title="Sign Up"
-            handlePress={() => {}}
+            handlePress={signUpWithEmail}
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />

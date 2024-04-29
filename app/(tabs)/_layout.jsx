@@ -1,8 +1,9 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Tabs } from 'expo-router'
+import { Redirect, Tabs } from 'expo-router'
 
 import Anticons from '@expo/vector-icons/AntDesign'
+import { useGlobalContext } from '../../context/GlobalProvider'
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
@@ -23,6 +24,9 @@ const TabIcon = ({ icon, color, name, focused }) => {
 }
 
 const TabsLayout = () => {
+  const { isLoading, isLoggedIn } = useGlobalContext()
+
+  if(!isLoading && !isLoggedIn) return <Redirect href='/' />
   return (
     <>
       <Tabs

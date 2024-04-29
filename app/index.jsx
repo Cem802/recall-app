@@ -1,11 +1,15 @@
 import { Button, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../components/CustomButton';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useGlobalContext } from '../context/GlobalProvider';
 
 
 export default function App() {
+  const { isLoading, isLoggedIn, user } = useGlobalContext()
+
+  if(!isLoading && isLoggedIn) return <Redirect href='/home' />
   return (
     <SafeAreaView className="bg-primary h-full">
       <LinearGradient
@@ -21,6 +25,7 @@ export default function App() {
             A place to store your thoughts, where you will never forget them again.
           </Text>
           <CustomButton title="Continue" containerStyles="mt-7 w-full" handlePress={() => router.push('/sign-in')}/>
+          <Text>User: {user?.id}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

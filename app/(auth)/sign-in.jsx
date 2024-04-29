@@ -4,9 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Link, router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
-import { useGlobalContext } from '../../context/GlobalProvider'
 import CustomButton from '../../components/CustomButton'
 import FormField from '../../components/FormField'
+import { supabase } from '../../lib/supabase'
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -15,27 +15,20 @@ const SignIn = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-//   const { setUser, setIsLoggedIn } = useGlobalContext()
+  async function signInWithEmail() {
+    if(!form.email || !form.password) {
+      Alert.alert('Error', 'Please fill in all fields')
+    }
+    setIsSubmitting(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    })
 
-//   const submit = async () => {
-//     if(!form.email || !form.password) {
-//       Alert.alert('Error', 'Please fill in all fields')
-//     }
+    if (error) Alert.alert(error.message)
+    setIsSubmitting(false)
+  }
 
-//     setIsSubmitting(true)
-
-//     try {
-
-//       setUser(result)
-//       setIsLoggedIn(true)
-
-//       router.replace('/home')
-//     } catch (error) {
-//       Alert.alert('Error', error.message)
-//     } finally {
-//       setIsSubmitting(false)
-//     }
-//   }
   return (
     <SafeAreaView className="bg-primary h-full">
         <LinearGradient
@@ -64,7 +57,7 @@ const SignIn = () => {
 
           <CustomButton
             title="Sign In"
-            handlePress={() => {}}
+            handlePress={signInWithEmail}
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />
