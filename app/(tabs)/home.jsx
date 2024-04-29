@@ -100,7 +100,7 @@ const home = () => {
         data={chats.sort((a, b) => b.pinned - a.pinned)}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ChatCard date={item.created_at} message={item.topic} pinned={item.pinned} id={item.id} refresh={() => getChatData()}/>
+          <ChatCard item={item} refresh={() => getChatData()}/>
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
