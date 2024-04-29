@@ -58,12 +58,11 @@ const ChatCard = ({item, refresh}) => {
                     />
                     <Text className="text-white font-pthin text-xs">Info</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24">
+                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => deleteChat()}>
                     <Anticon
                         name='delete'
                         size={25}
                         color='red'
-                        onPress={() => getMessageData()}
                     />
                     <Text className="text-white font-pthin text-xs">Delete</Text>
                 </TouchableOpacity>
@@ -134,6 +133,26 @@ const ChatCard = ({item, refresh}) => {
           }
         }
       }
+
+      async function deleteChat() {
+        try {
+          const { data, error } = await supabase
+            .from('chats')
+            .delete()
+            .eq('id', item.id)
+            .select()
+          if (error) {
+            throw error
+          }
+          if (data && refresh) {
+            refresh()
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            Alert.alert(error.message)
+          }
+        }
+    }
       
   return (
     <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}>
