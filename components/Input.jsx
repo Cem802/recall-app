@@ -27,7 +27,6 @@ const Input = ({placeholder, onSendMessage, buttonDown}) => {
         <TouchableOpacity
             className="h-[45px] w-[45px] bg-secondary rounded-full items-center justify-center mb-1"
             onPress={() => {
-                console.log("button pressed")
                 onSendMessage(input);
                 setInput('');
             }}>

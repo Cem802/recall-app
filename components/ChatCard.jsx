@@ -101,7 +101,7 @@ const ChatCard = ({item, refresh}) => {
           }
           if (data) {
             setTotalMessages(count)
-            setLastMessage(data[0].content)
+            setLastMessage(data.length > 0 ? data[0].content : 'Start chatting')
           }
         } catch (error) {
           if (error instanceof Error) {

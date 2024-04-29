@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Anticon from '@expo/vector-icons/AntDesign'
+import Feathericon from '@expo/vector-icons/Feather'
 import { router } from 'expo-router'
 
 const Header = ({title}) => {
@@ -13,7 +14,7 @@ const Header = ({title}) => {
         <Text className="text-white text-2xl font-bold">{title}</Text>
       </View>
       <TouchableOpacity className="flex-1 items-end h-full justify-center">
-        <Anticon name='delete' size={25} color='white'/>
+        <Feathericon name='more-vertical' size={25} color='white'/>
       </TouchableOpacity>
     </View>
   )
