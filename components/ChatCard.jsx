@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Pressable, Alert, } from 'react-native'
+import { View, Text, TouchableOpacity, Pressable, Alert, Animated, RectButton } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Anticon from '@expo/vector-icons/AntDesign'
 import FontawesomeIcon from '@expo/vector-icons/FontAwesome'
@@ -47,9 +47,21 @@ const ChatCard = ({item, refresh}) => {
     const [totalMessages, setTotalMessages] = useState(0)
     const [lastMessage, setLastMessage] = useState('')
 
-    const renderRightActions = () => {
+    const renderRightActions = (progress, dragX) => {
+        const trans = progress.interpolate({
+            inputRange: [0, 1, 1.1],
+            outputRange: [190, 0, -20],
+            extrapolate: 'clamp',
+          });
         return (
-            <View className="h-full w-48 flex-row justify-center items-center">
+            <Animated.View
+                className="h-full w-48 flex-row justify-center items-center"
+                style={[
+                    {
+                    transform: [{ translateX: trans }],
+                    },
+                ]}
+            >
                 <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => setBottomSheet({header: "Chat Info", content: <InfoCard date={formatedDate} topic={item.topic} total_msg={totalMessages} />})}>
                     <Anticon
                         name='infocirlceo'
@@ -66,13 +78,25 @@ const ChatCard = ({item, refresh}) => {
                     />
                     <Text className="text-white font-pthin text-xs">Delete</Text>
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
         );
     };
 
-    const renderLeftActions = () => {
+    const renderLeftActions = (progress, dragX) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 100],
+            outputRange: [-80, 20],
+            extrapolate: 'clamp',
+          });
         return (
-            <View className="h-full w-24 flex-row justify-center items-center">
+            <Animated.View
+                className="h-full w-20 flex-row justify-center items-center"
+                style={[
+                    {
+                    transform: [{ translateX: trans }],
+                    },
+                ]}
+            >
                 <TouchableOpacity className="h-full justify-center items-center gap-1">
                     <Anticon
                         name={`${item.pinned ? 'pushpin' : 'pushpino'}`}
@@ -82,7 +106,7 @@ const ChatCard = ({item, refresh}) => {
                     />
                     <Text className="text-white font-pthin text-xs">Pin</Text>
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
         );
     }
 
@@ -155,15 +179,15 @@ const ChatCard = ({item, refresh}) => {
     }
       
   return (
-    <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}>
+    <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions} overshootFriction={5}>
         <Pressable className="w-full" onPress={() => router.push(`/chat/${item.id}`)} >
-            <View className="flex-row justify-start items-center px-4 gap-4 bg-primary">
+            <View className="flex-row justify-start items-center px-4">
                 <Anticon
                     name='user'
                     size={30}
                     color='white'
                 />
-                <View className="flex-1 p-4 border-y-[1px] border-black-200">
+                <View className="flex-1 p-4 border-b-[1px] border-[#15122B] ml-4">
                     <Text className="text-white text-lg font-psemibold">{formatedDate}</Text>
                     <Text className="text-secondary-100 font-pextralight">{lastMessage}</Text>
                 </View>
