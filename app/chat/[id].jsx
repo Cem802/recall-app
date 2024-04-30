@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Alert, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Input from '../../components/Input'
@@ -13,6 +13,7 @@ const chat = () => {
     const { id } = useLocalSearchParams()
     const [messages, setMessages] = useState([])
     const [loadingMessages, setLoadingMessages] = useState(true)
+    const [aiTurnedOn, setAiTurnedOn] = useState(true)
 
     async function getMessages() {
         try {
@@ -39,17 +40,43 @@ const chat = () => {
         getMessages()
     }, [])
 
-    async function sendMessage(content) {
+    async function sendMessage(content, from) {
         try {
             const { data, error } = await supabase
                 .from('messages')
-                .insert([{ content, chat_id: id, from: 'User' }])
+                .insert([{ content, chat_id: id, from: from }])
                 .select()
             if (error) {
                 throw error
             }
             if (data) {
-                setMessages([...messages, data[0]])
+                setMessages(prevMessages => {
+                    const updatedMessages = [...prevMessages, data[0]];
+                    if (from === 'User' && aiTurnedOn) {
+                        queryOpenAI(content);
+                    }
+                    return updatedMessages;
+                });
+            }
+            return data
+        } catch (error) {
+            if (error instanceof Error) {
+                Alert.alert(error.message)
+            }
+        }
+    }
+
+    async function queryOpenAI(prompt) {
+        try {
+            console.log('querying openai')
+            const { data, error } = await supabase.functions.invoke('openai', {
+                body: { query: prompt }
+            })
+            if (error) {
+                throw error
+            }
+            if (data) {
+                sendMessage(data, 'AI')
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -66,8 +93,9 @@ const chat = () => {
             />
             <KeyboardUsingContainer>
                 <View className="h-full justify-between">
-                    <Header title="Chat" />
+                    <Header title="Chat" rightIconFunction={() => setAiTurnedOn(!aiTurnedOn)} />
                     <ChatView messages={messages.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))} loading={loadingMessages} />
+                    <Text className="text-white">AI: {aiTurnedOn ? 'On' : 'Off'}</Text>
                     <Input placeholder="Write down your thoughts..." onSendMessage={sendMessage}/>
                 </View>
             </KeyboardUsingContainer>

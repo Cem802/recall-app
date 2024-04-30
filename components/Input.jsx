@@ -27,7 +27,7 @@ const Input = ({placeholder, onSendMessage, buttonDown}) => {
         <TouchableOpacity
             className="h-[45px] w-[45px] bg-secondary rounded-full items-center justify-center mb-1"
             onPress={() => {
-                onSendMessage(input);
+                onSendMessage(input, 'User');
                 setInput('');
             }}>
                 <Anticons name={buttonDown ? 'arrowdown' : 'arrowup'} size={20} color='white'/>

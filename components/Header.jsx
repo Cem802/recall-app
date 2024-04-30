@@ -4,7 +4,7 @@ import Anticon from '@expo/vector-icons/AntDesign'
 import Feathericon from '@expo/vector-icons/Feather'
 import { router } from 'expo-router'
 
-const Header = ({title}) => {
+const Header = ({title, rightIconFunction}) => {
   return (
     <View className="flex-row justify-between items-center p-5 w-full h-[80px]">
       <TouchableOpacity className="flex-1 h-full justify-center" onPress={() => router.back()}>
@@ -13,7 +13,7 @@ const Header = ({title}) => {
       <View className=" flex-[3] h-full justify-center items-center">
         <Text className="text-white text-2xl font-bold">{title}</Text>
       </View>
-      <TouchableOpacity className="flex-1 items-end h-full justify-center">
+      <TouchableOpacity className="flex-1 items-end h-full justify-center" onPress={() => rightIconFunction()}>
         <Feathericon name='more-vertical' size={25} color='white'/>
       </TouchableOpacity>
     </View>
