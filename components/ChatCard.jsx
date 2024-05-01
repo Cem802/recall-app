@@ -6,36 +6,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { useGlobalContext } from '../context/GlobalProvider'
 import { supabase } from '../lib/supabase'
 import { router } from 'expo-router'
-
-const InfoCard = ({date, topic, total_msg}) => {
-    return (
-        <View className="p-5">
-            <View className="bg-[#6152B7] rounded-xl">
-                <View className="flex-row justify-between items-center p-5">
-                    <Text className="text-white font-pregular text-base">Date</Text>
-                    <Text className="text-white font-pregular text-base">{date}</Text>
-                </View>
-                <View className="w-full h-[1px] bg-secondary" />
-                <View className="flex-row justify-between items-center p-5">
-                    <Text className="text-white font-pregular text-base">Topic</Text>
-                    <Text className="text-white font-pregular text-base">{topic}</Text>
-                </View>
-                <View className="w-full h-[1px] bg-secondary-100" />
-                <View className="flex-row justify-between items-center p-5">
-                    <Text className="text-white font-pregular text-base">Total Messages</Text>
-                    <Text className="text-white font-pregular text-base">{total_msg}</Text>
-                </View>
-            </View>
-
-            <TouchableOpacity className="bg-[#6152B7] rounded-xl mt-5">
-                <View className="flex-row justify-between items-center p-5">
-                    <Text className="text-white font-psemibold text-base">Generate Summary</Text>
-                    <Text className="text-white font-pregular text-base"><FontawesomeIcon name="magic" size={25} color="white" /></Text>
-                </View>
-            </TouchableOpacity>
-        </View>
-    )
-}
+import InfoCard from './InfoCard'
 
 const ChatCard = ({item, refresh}) => {
     const { setBottomSheet } = useGlobalContext()
@@ -62,7 +33,13 @@ const ChatCard = ({item, refresh}) => {
                     },
                 ]}
             >
-                <TouchableOpacity className="h-full justify-center items-center gap-1 w-24" onPress={() => setBottomSheet({header: "Chat Info", content: <InfoCard date={formatedDate} topic={item.topic} total_msg={totalMessages} />})}>
+                <TouchableOpacity
+                  className="h-full justify-center items-center gap-1 w-24"
+                  onPress={() => setBottomSheet({
+                    header: "Chat Info",
+                    content: <InfoCard date={formatedDate} topic={item.topic} total_msg={totalMessages} id={item.id} />
+                  })}
+                >
                     <Anticon
                         name='infocirlceo'
                         size={25}
