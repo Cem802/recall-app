@@ -88,7 +88,6 @@ const ChatCard = ({item, refresh}) => {
     }
 
     async function getMessageData() {
-        console.log("function called")
         try {
           const { data, error, count } = await supabase
             .from('messages')
