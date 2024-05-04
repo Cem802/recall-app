@@ -165,7 +165,7 @@ const ChatCard = ({item, refresh}) => {
                 />
                 <View className="flex-1 p-4 border-b-[1px] border-[#15122B] ml-4">
                     <Text className="text-white text-lg font-psemibold">{formatedDate}</Text>
-                    <Text className="text-secondary-100 font-pextralight">{lastMessage}</Text>
+                    <Text className="text-secondary-100 font-pextralight" numberOfLines={1}>{lastMessage}</Text>
                 </View>
                 <Anticon
                     name='right'
