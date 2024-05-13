@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "recall_app",
-    "slug": "recall_app",
+    "slug": "recallapp",
     "scheme": "recall_app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,6 +29,15 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3e5f2a04-de6a-4753-9a2c-123c06afb6ec"
+      }
+    },
+    "owner": "cem802"
   }
 }
